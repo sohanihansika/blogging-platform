@@ -1,103 +1,52 @@
-import Image from "next/image";
+import Link from 'next/link';
+
+import classes from './page.module.css';
+import ImageSlideshow from '../components/images/images_slidshow';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      <header className={classes.header}>
+        <div className={classes.slideshow}>
+          <ImageSlideshow />
         </div>
+        <div>
+          <div className={classes.hero}>
+            <h1>Blogging Platform for Bloggers</h1>
+            <p>Share your thoughts and ideas with the world.</p>
+          </div>
+          <div className={classes.cta}>
+            {/* <Link href="/community" >Join the Community</Link> */}
+            <Link href="/posts">Explore Posts</Link>
+          </div>
+        </div>
+      </header>
+      <main>
+        <section className={classes.section}>
+            <h2>What is Blogify?</h2>
+            <p>
+                Blogify is a modern blogging platform designed for passionate writers, storytellers, and thought leaders. 
+                Whether you're sharing insights, documenting experiences, or inspiring readers, Blogify provides the 
+                perfect space to express yourself.
+            </p>
+            <p>
+                With a clean and user-friendly interface, Blogify helps you create, manage, and showcase your blogs effortlessly. 
+                Connect with like-minded individuals and be part of a thriving community.
+            </p>
+        </section>
+
+
+        <section className={classes.section}>
+            <h2>Why Choose Blogify?</h2>
+            <ul>
+                <li><strong>Effortless Writing:</strong> Create and publish content seamlessly with our Markdown-powered editor.</li>
+                <li><strong>Engage with Readers:</strong> Enable comments and interactions to build a strong community.</li>
+                <li><strong>Customizable Themes:</strong> Personalize your blog with themes that suit your style.</li>
+                <li><strong>Mobile-Friendly:</strong> Write and read on the go with a fully responsive design.</li>
+            </ul>
+        </section>
+
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
