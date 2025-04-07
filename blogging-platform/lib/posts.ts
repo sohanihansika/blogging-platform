@@ -17,6 +17,7 @@ export function getPostsList(){
       title: data.title || "Untitled",
       date: data.date || "Unknown Date",
       description: data.description || "No description available",
+      image: data.image || "No image available",
     };
   });
 }
@@ -34,6 +35,7 @@ export function getPost(slug: string){
     title: data.title || "Untitled",
     date: data.date || "Unknown Date",
     description: data.description || "No description available",
+    image: data.image || "No image available",
   };
 
 }

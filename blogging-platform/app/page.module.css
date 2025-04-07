@@ -50,15 +50,15 @@
     background: linear-gradient(90deg, #fd4715, #f9b241);
   }
   
-  .cta a:first-child {
+  .cta a::after {
     background: transparent;
     font-weight: normal;
     color: #ff9b05;
     padding-left: 0;
   }
   
-  .cta a:first-child:hover,
-  .cta a:first-child:active {
+  .cta a::after,
+  .cta a::after {
     background: transparent;
     color: #f9b241;
   }

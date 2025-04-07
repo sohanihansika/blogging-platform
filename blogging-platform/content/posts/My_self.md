@@ -2,6 +2,7 @@
 title: "My Self"
 date: "2025-04-02"
 description: "I am an intern at Calcey Technology."
+image: logo.png
 ---
 
 Hi! 

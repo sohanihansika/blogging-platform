@@ -1,11 +1,14 @@
+'use client';
 import Link from "next/link";
 import Image from "next/image";
-import logoImg from "../../assests/logo1.png";
+import logoImg from "../../assets/logo1.png";
 import classes from "./main-header.module.css";
+import { usePathname } from "next/navigation";
 
 
 export default function MainHeader() {
 
+    const path = usePathname();
     
     return (
         <header className={classes.header}>
@@ -17,7 +20,8 @@ export default function MainHeader() {
             <nav className={classes.nav}>
                 <ul>
                     <li>
-                        <Link className={classes.link} href="/posts">Posts</Link>
+                        <Link className={path.startsWith("/posts") ? `${classes.active} ${classes.link}` 
+        : classes.link} href="/posts">Posts</Link>
                     </li>
                     
                 </ul>
