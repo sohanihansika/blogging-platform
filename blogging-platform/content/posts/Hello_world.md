@@ -2,6 +2,7 @@
 title: "Hello world"
 date: "2025-04-02"
 description: "This is my first blog post."
+image: blog4.jpg
 ---
 
 
