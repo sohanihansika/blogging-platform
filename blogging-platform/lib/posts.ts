@@ -1,41 +1,42 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs/promises";
+import path from "path";
+import matter from "gray-matter";
 
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
-export function getPostsList(){
-  const fileNames = fs.readdirSync(postsDirectory);
+export async function getPostsList() {
+  const fileNames = await fs.readdir(postsDirectory);
 
-  return fileNames.map((fileName) => {
+  return fileNames.map(async (fileName) => {
     const filePath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(filePath, "utf-8");
-    const { data} = matter(fileContents);
+    const fileContents = await fs.readFile(filePath, "utf-8");
+    const { data } = matter(fileContents);
 
-    return{
+    return {
       slug: fileName.replace(".md", ""),
       title: data.title || "Untitled",
       date: data.date || "Unknown Date",
+      creator: data.creator || "Unknown Creator",
       description: data.description || "No description available",
       image: data.image || "No image available",
     };
   });
 }
 
-export function getPost(slug: string){
+export async function getPost(slug: string) {
   const filePath = path.join(postsDirectory, `${slug}.md`);
-  if(!fs.existsSync(filePath)){
-    return null;
-  }
-  const fileContent = fs.readFileSync(filePath, "utf-8");
+  // if (!fs.existsSync(filePath)) {
+  //   return null;
+  // }
+  const fileContent = await fs.readFile(filePath, "utf-8");
   const { content, data } = matter(fileContent);
 
-  return{
+  return {
     content,
     title: data.title || "Untitled",
     date: data.date || "Unknown Date",
+    creator: data.creator || "Unknown Creator",
     description: data.description || "No description available",
     image: data.image || "No image available",
   };
-
 }
