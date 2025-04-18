@@ -23,7 +23,8 @@ export default function PostItem({
     <article className={classes.post}>
       <header>
         <div className={classes.image}>
-          <Image src={`/images/posts/${image}`} alt={title} fill />
+          {/* <Image src={`/images/posts/${image}`} alt={title} fill /> */}
+          <Image src={image} alt={title} fill />
         </div>
         <div className={classes.headerText}>
           <h2>{title}</h2>

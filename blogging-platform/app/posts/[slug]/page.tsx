@@ -36,12 +36,12 @@ export default async function PostPage({
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image src={`/images/posts/${post.image}`} alt={post.title} fill />
+          <Image src={post.image} alt={post.title} fill />
         </div>
         <div className={classes.headerText}>
           <h1>{post.title}</h1>
           <p className={classes.creator}>
-            by <a>{post.creator}</a>
+            by <a href={`/posts/creator/${encodeURIComponent(post.creator)}`}>{post.creator}</a>
           </p>
           <p className={classes.date}>{post.date}</p>
           {/* <p className={classes.description}>{post.description}</p> */}
