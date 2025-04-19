@@ -8,3 +8,9 @@ export async function POST(req: Request) {
   const post = await Post.create(body);
   return NextResponse.json(post);
 }
+
+export async function GET(_req: Request) {
+  await connectToDatabase();
+  const posts = await Post.find({}, "-content").sort({ date: 1 });
+  return NextResponse.json(posts);
+}
