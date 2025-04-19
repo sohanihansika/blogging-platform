@@ -1,32 +1,36 @@
-import { getPostsList } from "@/lib/posts";
 import PostGrid from "@/components/posts/post-grid";
 import classes from "./page.module.css";
 
-export const generateMetadata = ({
-  params,
-}: {
-  params: { creator: string };
-}) => ({
+export const generateMetadata = ({params,}: {params: { creator: string }}) => ({
   title: `Posts by ${decodeURIComponent(params.creator)}`,
 });
 
 async function CreatorPosts({ params }: { params: { creator: string } }) {
-  const posts = await getPostsList();
-  const resolvedPosts = await Promise.all(posts);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`);
+  const posts: {
+    creator: string;
+    title: string;
+    slug: string;
+    image: string;
+    date: string;
+    description: string;
+  }[] = await res.json();
   const creatorName = decodeURIComponent(params.creator);
-  const creatorPosts = resolvedPosts.filter(
-    (post) => post.creator === creatorName
-  );
+  const creatorPosts = posts
+    .filter((post) => post.creator === creatorName)
+    .map((post) => ({
+      ...post,
+      title: post.title || "Untitled",
+      slug: post.slug || "unknown-slug",
+      image: post.image || "/default-image.jpg",
+      date: post.date || new Date().toISOString(),
+      description: post.description || "No description available",
+    }));
 
-  const sortedPosts = creatorPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
-  return <PostGrid posts={sortedPosts} />;
+  return <PostGrid posts={creatorPosts} />;
 }
 
-export default async function CreatorPostsPage({
-  params,
-}: {
-  params: { creator: string };
-}) {
+export default async function CreatorPostsPage({params,}: {params: { creator: string }}) {
   return (
     <>
       <header className={classes.header}>

@@ -1,0 +1,29 @@
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-left: 0.3rem;
+  align-items:end;
+}
+
+.icon1 {
+  font-size: 1.5rem;
+  color: #f2a323;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.icon1:hover {
+  color: #efbc6b;
+}
+
+.icon2 {
+  font-size: 1.5rem;
+  color: #ae1313;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.icon2:hover {
+  color: #f95f5f;
+}

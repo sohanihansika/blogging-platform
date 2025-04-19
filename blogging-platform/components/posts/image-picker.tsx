@@ -7,6 +7,7 @@ import classes from "./image-picker.module.css";
 interface ImagePickerProps {
   label: string;
   name: string;
+  value?: string;
   onImagePick: (imageData: string) => void;
 }
 
@@ -60,7 +61,7 @@ export default function ImagePicker({
           name={name}
           ref={imageInput}
           onChange={handleImageChange}
-          required
+          // required
         />
         <button
           className={classes.button}

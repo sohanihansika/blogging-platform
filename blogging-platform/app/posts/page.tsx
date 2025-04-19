@@ -1,5 +1,5 @@
 import PostGrid from "@/components/posts/post-grid";
-import { getPostsList } from "@/lib/posts";
+// import { getPostsList } from "@/lib/posts";
 import Link from "next/link";
 import classes from "./page.module.css";
 import { Suspense } from "react";
@@ -9,11 +9,20 @@ export const metadata = {
 };
 
 async function Posts() {
-  const posts = await getPostsList();
-  const resolvedPosts = await Promise.all(posts);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
+    cache: "no-store",
+  });
+  const posts = await res.json();
+  if(!posts){
+    return <p className={classes.loading}>No posts found</p>;
+  }
+  return <PostGrid posts={posts} />;
 
-  const sortedPosts = resolvedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
-  return <PostGrid posts={sortedPosts} />;
+  // const posts = await getPostsList();
+  // const resolvedPosts = await Promise.all(posts);
+
+  // const sortedPosts = resolvedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
+  // return <PostGrid posts={sortedPosts} />;
 }
 
 export default function PostsPage() {
