@@ -1,5 +1,5 @@
 import PostGrid from "@/components/posts/post-grid";
-import { getPostsList } from "@/lib/posts";
+// import { getPostsList } from "@/lib/posts";
 import Link from "next/link";
 import classes from "./page.module.css";
 import { Suspense } from "react";
@@ -9,11 +9,20 @@ export const metadata = {
 };
 
 async function Posts() {
-  const posts = await getPostsList();
-  const resolvedPosts = await Promise.all(posts);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
+    cache: "no-store",
+  });
+  const posts = await res.json();
+  if(!posts){
+    return <p className={classes.loading}>No posts found</p>;
+  }
+  return <PostGrid posts={posts} />;
 
-  const sortedPosts = resolvedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
-  return <PostGrid posts={sortedPosts} />;
+  // const posts = await getPostsList();
+  // const resolvedPosts = await Promise.all(posts);
+
+  // const sortedPosts = resolvedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
+  // return <PostGrid posts={sortedPosts} />;
 }
 
 export default function PostsPage() {
@@ -35,25 +44,4 @@ export default function PostsPage() {
       </main>
     </>
   );
-
-  //     const posts =  getPostsList();
-
-  //     return(
-  //         <div className="p-6">
-  //             <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
-  //             {posts.length === 0 ? (
-  //                 <p>No posts available.</p>
-  //             ) : (
-  //                 <ul>
-  //                 {posts.map((post) => (
-  //                     <li key={post.slug} className="mb-2">
-  //                     <Link href={`/posts/${post.slug}`} className="text-blue-500 hover:underline">
-  //                         {post.title}
-  //                     </Link>
-  //                     </li>
-  //                 ))}
-  //                 </ul>
-  //             )}
-  //         </div>
-  //   );
 }
