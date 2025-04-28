@@ -9,8 +9,16 @@ export async function POST(req: Request) {
   return NextResponse.json(post);
 }
 
-export async function GET(_req: Request) {
+export async function GET(req: Request) {
   await connectToDatabase();
-  const posts = await Post.find({}, "-content").sort({ date: 1 });
+  const { searchParams } = new URL(req.url);
+  const creator = searchParams.get("creator");
+
+  let filter: any = {};
+  if (creator) {
+    filter.creator = creator;
+  }
+
+  const posts = await Post.find(filter, "-content").sort({ date: 1 });
   return NextResponse.json(posts);
 }

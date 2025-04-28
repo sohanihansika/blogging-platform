@@ -37,7 +37,7 @@ export default function Home() {
           </p>
         </section>
 
-        <section className={classes.section}>
+        {/* <section className={classes.section}>
           <h2>Why Choose Blogify?</h2>
           <ul>
             <li>
@@ -57,7 +57,7 @@ export default function Home() {
               fully responsive design.
             </li>
           </ul>
-        </section>
+        </section> */}
       </main>
     </>
   );

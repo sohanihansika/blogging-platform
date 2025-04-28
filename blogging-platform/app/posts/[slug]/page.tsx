@@ -4,10 +4,11 @@ import NotFound from "../not-found";
 import Image from "next/image";
 import classes from "./page.module.css";
 import { notFound } from "next/navigation";
-import PostActions from "./postActions";
+import PostActions from "./post-actions";
 
 async function fetchPost(slug: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`,
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`,
     {
       cache: "no-store",
     }
@@ -18,7 +19,11 @@ async function fetchPost(slug: string) {
   return res.json();
 }
 
-export async function generateMetadata({params,}: {params: { slug: string }}) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const post = await fetchPost(params.slug);
 
   if (!post) {
@@ -31,7 +36,11 @@ export async function generateMetadata({params,}: {params: { slug: string }}) {
   };
 }
 
-export default async function PostPage({params,}: {params: { slug: string }}) {
+export default async function PostPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const post = await fetchPost(params.slug);
   if (!post) {
     return <NotFound />;
@@ -47,7 +56,7 @@ export default async function PostPage({params,}: {params: { slug: string }}) {
           <h1>{post.title}</h1>
           <p className={classes.creator}>
             by{" "}
-            <a href={`/posts/creator/${encodeURIComponent(post.creator)}`}>
+            <a href={`/posts?creator=${encodeURIComponent(post.creator)}`}>
               {post.creator}
             </a>
           </p>
@@ -58,7 +67,6 @@ export default async function PostPage({params,}: {params: { slug: string }}) {
       <main>
         <article className={classes.content}>
           <ReactMarkdown>{post.content}</ReactMarkdown>
-          
         </article>
       </main>
     </>

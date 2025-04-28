@@ -1,46 +1,66 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import PostGrid from "@/components/posts/post-grid";
-// import { getPostsList } from "@/lib/posts";
 import Link from "next/link";
 import classes from "./page.module.css";
-import { Suspense } from "react";
 
-export const metadata = {
-  title: "All Posts",
-};
+// export const metadata = {
+//   title: "All Posts",
+// }
 
-async function Posts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
-    cache: "no-store",
-  });
-  const posts = await res.json();
-  if(!posts){
-    return <p className={classes.loading}>No posts found</p>;
-  }
-  return <PostGrid posts={posts} />;
+export default function AllPostsPage() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const creator = searchParams.get("creator");
 
-  // const posts = await getPostsList();
-  // const resolvedPosts = await Promise.all(posts);
+  useEffect(() => {
+    async function fetchPosts() {
+      const query = creator ? `?creator=${encodeURIComponent(creator)}` : "";
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts${query}`,
+        {
+          cache: "no-store",
+        }
+      );
+      const data = await res.json();
+      setPosts(data);
+      setLoading(false);
+    }
+    fetchPosts();
+  }, [creator]);
 
-  // const sortedPosts = resolvedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
-  // return <PostGrid posts={sortedPosts} />;
-}
-
-export default function PostsPage() {
   return (
     <>
       <header className={classes.header}>
         <h1>
-          Share blog posts , created{" "}
-          <span className={classes.highlight}>by you</span>
+          {creator ? (
+            <>
+              Explore Blog Posts{" "}
+              <span className={classes.highlight}>by {creator}</span>
+            </>
+          ) : (
+            <>
+              Share blog posts, created{" "}
+              <span className={classes.highlight}>by you</span>
+            </>
+          )}
         </h1>
         <p className={classes.cta}>
           <Link href="/posts/share">Share yours</Link>
         </p>
       </header>
+
       <main className={classes.main}>
-        <Suspense fallback={<p className={classes.loading}>Loading...</p>}>
-          <Posts />
-        </Suspense>
+        {loading ? (
+          <p className={classes.loading}>Loading...</p>
+        ) : posts.length === 0 ? (
+          <p className={classes.loading}>No posts found</p>
+        ) : (
+          <PostGrid posts={posts} />
+        )}
       </main>
     </>
   );
