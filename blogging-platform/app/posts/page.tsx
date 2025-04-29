@@ -49,7 +49,12 @@ export default function AllPostsPage() {
           )}
         </h1>
         <p className={classes.cta}>
-          <Link href="/posts/share">Share yours</Link>
+          {creator ? (
+            // <Link href="/posts">Show All Posts</Link>
+            ""
+          ) : (
+            <Link href="/posts/share">Share yours</Link>
+          )}
         </p>
       </header>
 

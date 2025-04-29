@@ -28,6 +28,16 @@ export default function MainHeader() {
             >
               Posts
             </Link>
+            {/* <Link
+              className={
+                path.startsWith("/auth/signin")
+                  ? `${classes.active} ${classes.link}`
+                  : classes.link
+              }
+              href="/auth/signin"
+            >
+              Sign In
+            </Link> */}
           </li>
         </ul>
       </nav>
