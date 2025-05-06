@@ -30,6 +30,6 @@
 //     date: post.date,
 //     creator: post.creator,
 //     description: post.description,
-//     image: post.image,    
+//     image: post.image,
 //   }
 // }

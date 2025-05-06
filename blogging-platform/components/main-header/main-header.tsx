@@ -4,8 +4,10 @@ import Image from "next/image";
 import logoImg from "../../assets/logo1.png";
 import classes from "./main-header.module.css";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 export default function MainHeader() {
+  const { data: session } = useSession();
   const path = usePathname();
 
   return (
@@ -38,6 +40,20 @@ export default function MainHeader() {
             >
               Sign In
             </Link> */}
+            {session ? (
+              <>
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className={classes.buttonLink}
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Link className={classes.link} href="/signin">
+                Sign In
+              </Link>
+            )}
           </li>
         </ul>
       </nav>

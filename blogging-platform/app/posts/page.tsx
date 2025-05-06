@@ -23,7 +23,7 @@ export default function AllPostsPage() {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts${query}`,
         {
           cache: "no-store",
-        }
+        },
       );
       const data = await res.json();
       setPosts(data);

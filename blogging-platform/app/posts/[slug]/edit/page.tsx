@@ -22,7 +22,7 @@ export default function EditPostPage({
   useEffect(() => {
     const fetchPost = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`,
       );
       const data = await res.json();
       setForm(data);
@@ -31,7 +31,7 @@ export default function EditPostPage({
   }, [slug]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -50,7 +50,7 @@ export default function EditPostPage({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(form),
-      }
+      },
     );
     if (res.ok) {
       router.push(`/posts/${slug}`);

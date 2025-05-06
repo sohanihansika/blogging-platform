@@ -11,7 +11,7 @@ async function fetchPost(slug: string) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) return null;

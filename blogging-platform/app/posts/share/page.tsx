@@ -1,20 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useSession, signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./page.module.css";
 import ImagePicker from "@/components/posts/image-picker";
 
 export default function CreatePostPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [form, setForm] = useState({
     slug: "",
     title: "",
     date: new Date().toISOString().split("T")[0],
-    creator: "",
+    creator: session?.user?.name || "",
     description: "",
     image: "",
     content: "",
   });
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/signin");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <p className={classes.loading}>Checking authentication...</p>;
+  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -30,8 +44,6 @@ export default function CreatePostPage() {
     }));
   };
 
-  const router = useRouter();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await fetch("/api/posts", {
@@ -39,7 +51,7 @@ export default function CreatePostPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, creator: session?.user?.name }),
     });
     if (res.ok) {
       router.push("/posts");
@@ -55,16 +67,16 @@ export default function CreatePostPage() {
           Share your <span className={classes.highlight}>blog post</span>
         </h1>
       </header>
+
       <main className={classes.main}>
         <form className={classes.form} onSubmit={handleSubmit}>
           <p>
             <label htmlFor="title">Title</label>
             <input name="title" onChange={handleChange} required />
           </p>
-
           <p>
             <label htmlFor="creator">Creator</label>
-            <input name="creator" onChange={handleChange} required />
+            <input name="creator" value={session?.user?.name || ""} readOnly />
           </p>
 
           <p>
@@ -81,6 +93,7 @@ export default function CreatePostPage() {
               required
             />
           </p>
+
           <ImagePicker
             label="Image"
             name="image"

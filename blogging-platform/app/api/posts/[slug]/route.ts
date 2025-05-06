@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   await connectToDatabase();
   const post = await Post.findOne({ slug: params.slug });
@@ -18,7 +18,7 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   const data = await req.json();
   await connectToDatabase();
@@ -27,7 +27,7 @@ export async function PUT(
   if (result.matchedCount === 0) {
     return NextResponse.json(
       { error: "Post not found or no changes made" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -36,7 +36,7 @@ export async function PUT(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   await connectToDatabase();
   const result = await Post.deleteOne({ slug: params.slug });
