@@ -4,7 +4,7 @@ const PostSchema = new mongoose.Schema({
   slug: { type: String, required: true, unique: true },
   title: String,
   date: String,
-  creator: String,
+  creator:{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
   description: String,
   image: String,
   content: String,

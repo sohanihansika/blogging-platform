@@ -6,7 +6,7 @@ interface Post {
   slug: string;
   image: string;
   date: string;
-  creator: string;
+  creator: { name: string };
   description: string;
 }
 

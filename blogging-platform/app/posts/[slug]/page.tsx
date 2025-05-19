@@ -56,8 +56,8 @@ export default async function PostPage({
           <h1>{post.title}</h1>
           <p className={classes.creator}>
             by{" "}
-            <a href={`/posts?creator=${encodeURIComponent(post.creator)}`}>
-              {post.creator}
+            <a href={`/posts?creator=${encodeURIComponent(post.creator._id)}`}>
+              {post.creator.name}
             </a>
           </p>
           <p className={classes.date}>{post.date}</p>

@@ -18,20 +18,32 @@ export default function EditPostPage({
     image: "",
     content: "",
   });
+  const [creatorName, setCreatorName] = useState<string | null>(null);
   const router = useRouter();
   useEffect(() => {
     const fetchPost = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`
       );
       const data = await res.json();
-      setForm(data);
+      setForm({
+        title: data.title,
+        creator: data.creator._id || data.creator,
+        description: data.description,
+        image: data.image,
+        content: data.content,
+      });
+      if (data.creator?.name) {
+        setCreatorName(data.creator.name);
+      } else {
+        setCreatorName(null);
+      }
     };
     fetchPost();
   }, [slug]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -50,7 +62,7 @@ export default function EditPostPage({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(form),
-      },
+      }
     );
     if (res.ok) {
       router.push(`/posts/${slug}`);
@@ -73,11 +85,7 @@ export default function EditPostPage({
 
           <p>
             <label htmlFor="creator">Creator</label>
-            <input
-              name="creator"
-              value={form.creator}
-              onChange={handleChange}
-            />
+            <input name="creator" value={creatorName || ""} readOnly />
           </p>
 
           <p>

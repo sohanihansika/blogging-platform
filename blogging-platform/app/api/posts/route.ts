@@ -19,6 +19,8 @@ export async function GET(req: Request) {
     filter.creator = creator;
   }
 
-  const posts = await Post.find(filter, "-content").sort({ date: 1 });
+  const posts = await Post.find(filter, "-content")
+  .sort({ date: 1 })
+  .populate("creator", "name");
   return NextResponse.json(posts);
 }

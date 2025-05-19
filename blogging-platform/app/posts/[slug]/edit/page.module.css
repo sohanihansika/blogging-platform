@@ -96,3 +96,7 @@
   color: #979797;
   cursor: not-allowed;
 }
+.readonly {
+  background-color: #f0f0f0;
+  color: #555;
+}

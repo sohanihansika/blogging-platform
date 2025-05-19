@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./page.module.css";
 import ImagePicker from "@/components/posts/image-picker";
+import mongoose from "mongoose";
 
 export default function CreatePostPage() {
   const { data: session, status } = useSession();
@@ -14,7 +15,7 @@ export default function CreatePostPage() {
     slug: "",
     title: "",
     date: new Date().toISOString().split("T")[0],
-    creator: session?.user?.name || "",
+    creator: new mongoose.Types.ObjectId(session?.user?.id),
     description: "",
     image: "",
     content: "",
@@ -51,7 +52,7 @@ export default function CreatePostPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...form, creator: session?.user?.name }),
+      body: JSON.stringify({ ...form, creator: session?.user?.id }),
     });
     if (res.ok) {
       router.push("/posts");
@@ -74,7 +75,8 @@ export default function CreatePostPage() {
             <label htmlFor="title">Title</label>
             <input name="title" onChange={handleChange} required />
           </p>
-          <p>
+          
+          <p style={{ display: "none" }}>
             <label htmlFor="creator">Creator</label>
             <input name="creator" value={session?.user?.name || ""} readOnly />
           </p>

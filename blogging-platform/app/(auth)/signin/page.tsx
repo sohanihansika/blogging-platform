@@ -15,6 +15,23 @@ export default function SignIn() {
     e.preventDefault();
     setPending(true);
 
+    if (!email || !password) {
+      setPending(false);
+      setError("Please fill in all fields..");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setPending(false);
+      setError("Please enter a valid email address..");
+      return;
+    }
+    if (password.length < 6) {
+      setPending(false);
+      setError("Password must be at least 6 characters long..");
+      return;
+    }
+
     const res = await signIn("credentials", {
       email,
       password,
@@ -34,7 +51,7 @@ export default function SignIn() {
 
   const handleProvider = (
     event: React.MouseEvent<HTMLButtonElement>,
-    value: "github" | "google",
+    value: "github" | "google"
   ) => {
     event.preventDefault();
     signIn(value, {
@@ -54,7 +71,7 @@ export default function SignIn() {
       {error && <p className={classes.error}>{error}</p>}
       <main className={classes.main}>
         <form onSubmit={handleSubmit} className={classes.form}>
-          <p>
+          <div>
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -63,9 +80,9 @@ export default function SignIn() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-          </p>
+          </div>
 
-          <p>
+          <div>
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -74,21 +91,17 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </p>
+          </div>
 
-          <p className={classes.actions}>
+          <div className={classes.actions}>
             <button type="submit" disabled={pending}>
               Log In
             </button>
-          </p>
+          </div>
         </form>
         <div className={classes.google}>
           <button disabled={false} onClick={(e) => handleProvider(e, "google")}>
-            <img
-              src="https://raw.githubusercontent.com/sidiDev/remote-assets/7cd06bf1d8859c578c2efbfda2c68bd6bedc66d8/google-icon.svg"
-              alt="Google"
-              className={classes.googleImg}
-            />
+            <img src="google2.png" alt="Google" className={classes.googleImg} />
             Continue with Google
           </button>
         </div>

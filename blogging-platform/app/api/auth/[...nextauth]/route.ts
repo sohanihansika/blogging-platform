@@ -9,7 +9,13 @@ import Github from "next-auth/providers/github";
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60,
+    updateAge: 15 * 60,
   },
+  // jwt: {
+  //   maxAge: 1 * 60,
+
+  // },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -35,12 +41,16 @@ export const authOptions: NextAuthOptions = {
           }
           const isValidPassword = await bcrypt.compare(
             credentials?.password ?? "",
-            user.password as string,
+            user.password as string
           );
           if (!isValidPassword) {
             throw new Error("Invalid password");
           }
-          return user;
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          };
         } catch (error) {
           console.error("Error authorizing user:", error);
           throw new Error("Authorization failed");
@@ -64,21 +74,33 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
+      await connectToDatabase();
+      const dbUser = await User.findOne({ email: token.email });
+
+      if (dbUser) {
+        token.id = dbUser._id.toString();
+        token.name = dbUser.name;
+        token.email = dbUser.email;
+        token.picture = dbUser.image;
       }
+      if (token?.iat && token?.exp) {
+        const issuedAt = new Date(Number(token.iat) * 1000).toLocaleString();
+        const expiresAt = new Date(Number(token.exp) * 1000).toLocaleString();
+        console.log(`Token issued at: ${issuedAt}`);
+        console.log(`Token expires at: ${expiresAt}`);
+      }
+
       return token;
     },
+
     async session({ session, token }) {
-      if (token) {
-        session.user = {
-          email: token.email,
-          name: token.name,
-          image: token.picture,
-        };
+      if (session.user && token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture ?? null;
       }
+
       return session;
     },
   },

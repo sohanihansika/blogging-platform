@@ -7,7 +7,7 @@ interface PostItemProps {
   slug: string;
   image: string;
   date: string;
-  creator: string;
+  creator?: { name: string };
   description: string;
 }
 
@@ -28,7 +28,7 @@ export default function PostItem({
         </div>
         <div className={classes.headerText}>
           <h2>{title}</h2>
-          <h4>by {creator}</h4>
+          <h4>by {creator?.name ?? "Unknown"}</h4>
           <p>{date}</p>
         </div>
       </header>

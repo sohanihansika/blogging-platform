@@ -7,7 +7,8 @@ export async function GET(
   { params }: { params: { slug: string } },
 ) {
   await connectToDatabase();
-  const post = await Post.findOne({ slug: params.slug });
+  const post = await Post.findOne({ slug: params.slug })
+    .populate("creator", "name");
 
   if (!post) {
     return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -22,7 +23,8 @@ export async function PUT(
 ) {
   const data = await req.json();
   await connectToDatabase();
-  const result = await Post.updateOne({ slug: params.slug }, { $set: data });
+  const result = await Post.updateOne({ slug: params.slug }, { $set: data })
+  .populate("creator", "name");
 
   if (result.matchedCount === 0) {
     return NextResponse.json(

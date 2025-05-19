@@ -13,6 +13,7 @@ import classes from "./page.module.css";
 export default function AllPostsPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [creatorName, setCreatorName] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const creator = searchParams.get("creator");
 
@@ -28,6 +29,11 @@ export default function AllPostsPage() {
       const data = await res.json();
       setPosts(data);
       setLoading(false);
+      if (creator && data.length > 0 && data[0].creator?.name) {
+        setCreatorName(data[0].creator.name);
+      } else {
+        setCreatorName(null);
+      }
     }
     fetchPosts();
   }, [creator]);
@@ -39,7 +45,7 @@ export default function AllPostsPage() {
           {creator ? (
             <>
               Explore Blog Posts{" "}
-              <span className={classes.highlight}>by {creator}</span>
+              <span className={classes.highlight}>by {creatorName}</span>
             </>
           ) : (
             <>
